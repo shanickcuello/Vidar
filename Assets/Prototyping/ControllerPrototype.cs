@@ -1,5 +1,6 @@
 
 using System;
+using Weapons;
 using UnityEngine;
 using Fusion;
 
@@ -9,6 +10,8 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
   protected NetworkRigidbody _nrb;
   protected NetworkRigidbody2D _nrb2d;
   protected NetworkTransform _nt;
+
+  [SerializeField] Gun gun;
 
   [Networked]
   public Vector3 MovementDirection { get; set; }
@@ -60,7 +63,8 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
         direction += TransformLocal ? transform.right : Vector3.right;
       }
 
-      if (input.IsDown(NetworkInputPrototype.BUTTON_FIRE)) {
+      if (input.IsDown(NetworkInputPrototype.BUTTON_FIRE))
+      {
         Debug.Log(" Fire");
       }
 
