@@ -1,5 +1,4 @@
 
-using System;
 using Weapons;
 using UnityEngine;
 using Fusion;
@@ -12,6 +11,7 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
   protected NetworkTransform _nt;
 
   [SerializeField] Gun gun;
+  [SerializeField] private Transform _bulletSpawnPosition;
 
   [Networked]
   public Vector3 MovementDirection { get; set; }
@@ -20,6 +20,8 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
 
   [DrawIf(nameof(ShowSpeed), Hide = true)]
   public float Speed = 6f;
+
+  private NetworkObject _prefabBall;
 
   bool ShowSpeed => this && !TryGetComponent<NetworkCharacterControllerPrototype>(out _);
 
@@ -62,7 +64,7 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
       if (input.IsDown(NetworkInputPrototype.BUTTON_RIGHT)) {
         direction += TransformLocal ? transform.right : Vector3.right;
       }
-
+      
       if (input.IsDown(NetworkInputPrototype.BUTTON_FIRE))
       {
         Debug.Log(" Fire");
@@ -85,16 +87,5 @@ public class ControllerPrototype : Fusion.NetworkBehaviour {
     var rotation = Quaternion.LookRotation(direction, transform.up);
     transform.rotation = rotation;
     transform.position += (direction * Speed * Runner.DeltaTime);
-
-    // if (_ncc) {
-    //   _ncc.Move(direction);
-    // } else if (_nrb && !_nrb.Rigidbody.isKinematic) {
-    //   _nrb.Rigidbody.AddForce(direction * Speed);
-    // } else if (_nrb2d && !_nrb2d.Rigidbody.isKinematic) {
-    //   Vector2 direction2d = new Vector2(direction.x, direction.y + direction.z);
-    //   _nrb2d.Rigidbody.AddForce(direction2d * Speed);
-    // } else {
-    //   transform.position += (direction * Speed * Runner.DeltaTime);
-    // }
   }
 }

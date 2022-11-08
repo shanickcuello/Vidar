@@ -8,7 +8,11 @@ using UnityEngine;
 /// A simple example of Fusion input collection. This component should be on the same GameObject as the <see cref="NetworkRunner"/>.
 /// </summary>
 [ScriptHelp(BackColor = EditorHeaderBackColor.Steel)]
-public class InputBehaviourPrototype : Fusion.Behaviour, INetworkRunnerCallbacks {
+public class InputBehaviourPrototype : Fusion.Behaviour, INetworkRunnerCallbacks
+{
+
+  [SerializeField] private Transform spawnBulletPosition;
+  private NetworkObject _prefabBall;
 
   public void OnInput(NetworkRunner runner, NetworkInput input) {
     var frameworkInput = new NetworkInputPrototype();
