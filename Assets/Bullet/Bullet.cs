@@ -17,13 +17,15 @@ public class Bullet : NetworkBehaviour
     
     public override void FixedUpdateNetwork()
     {
-        CheckBulletLife();
         transform.position += _bulletSpeed * transform.forward * Runner.DeltaTime;
+        CheckBulletLife();
     }
 
     private void CheckBulletLife()
     {
         if (life.Expired(Runner))
+        {
             Runner.Despawn(Object);
+        }
     }
 }
