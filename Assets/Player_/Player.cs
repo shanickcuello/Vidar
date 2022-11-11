@@ -12,7 +12,8 @@ namespace Player_
         
         private NetworkCharacterControllerPrototype _cc;
         private Vector3 _forward;
-        
+        private bool _canMove;
+
         private void Awake()
         {
             _cc = GetComponent<NetworkCharacterControllerPrototype>();
@@ -22,6 +23,7 @@ namespace Player_
         {
             if (GetInput(out NetworkInputData data))
             {
+                if (!_canMove) return;
                 data.direction.Normalize();
                 _cc.Move(5 * data.direction * Runner.DeltaTime);
 
@@ -43,6 +45,11 @@ namespace Player_
                     }
                 }
             }
+        }
+
+        public void SetMovement(bool value)
+        {
+            _canMove = value;
         }
     }
 }

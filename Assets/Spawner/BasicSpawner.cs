@@ -15,6 +15,9 @@ namespace Spawner
         
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
         private bool _mouseButton0;
+        private int _amountOfPlayersOnline;
+
+        private List<Player> _players;
         private void Update()
         {
             _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0);
@@ -56,10 +59,21 @@ namespace Spawner
                 // Create a unique position for the player
                 Vector3 spawnPosition = new Vector3((player.RawEncoded%runner.Config.Simulation.DefaultPlayers)*3,1,0);
                 NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+                _amountOfPlayersOnline++;
+                Debug.Log("New player online " + _amountOfPlayersOnline + player);
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedCharacters.Add(player, networkPlayerObject);
+                
+                if (_amountOfPlayersOnline >= 4)
+                {
+                    foreach (var playerController in _spawnedCharacters)
+                    {
+                        playerController.Value.gameObject.GetComponent<Player>().SetMovement(true);
+                    }
+                }
             }
         }
+
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             // Find and remove the players avatar
