@@ -5,14 +5,18 @@ using Fusion.Sockets;
 using Player_;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zombies;
 
 namespace Spawner
 {
     public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
-        private NetworkRunner _runner;
         [SerializeField] private NetworkPrefabRef _playerPrefab;
-        
+
+        [SerializeField] private ZombieSpawner _zombieSpawner;
+        [SerializeField] private int amountPlayerToStartGame;
+       
+        private NetworkRunner _runner;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
         private bool _mouseButton0;
         private int _amountOfPlayersOnline;
@@ -56,22 +60,38 @@ namespace Spawner
         {
             if (runner.IsServer)
             {
-                // Create a unique position for the player
-                Vector3 spawnPosition = new Vector3((player.RawEncoded%runner.Config.Simulation.DefaultPlayers)*3,1,0);
-                NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
-                _amountOfPlayersOnline++;
+                var networkPlayerObject = CreatePlayers(runner, player);
+                IncreasePlayerCounter();
                 Debug.Log("New player online " + _amountOfPlayersOnline + player);
-                // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedCharacters.Add(player, networkPlayerObject);
                 
-                if (_amountOfPlayersOnline >= 4)
+                UnlockMovementForPlayersWhenNeeded();
+            }
+        }
+
+        private void UnlockMovementForPlayersWhenNeeded()
+        {
+            if (_amountOfPlayersOnline >= amountPlayerToStartGame)
+            {
+                foreach (var playerController in _spawnedCharacters)
                 {
-                    foreach (var playerController in _spawnedCharacters)
-                    {
-                        playerController.Value.gameObject.GetComponent<Player>().SetMovement(true);
-                    }
+                    playerController.Value.gameObject.GetComponent<Player>().SetMovement(true);
+                    _zombieSpawner.SetSpawning(true);
                 }
             }
+        }
+
+        private void IncreasePlayerCounter()
+        {
+            _amountOfPlayersOnline++;
+        }
+
+        private NetworkObject CreatePlayers(NetworkRunner runner, PlayerRef player)
+        {
+            // Create a unique position for the player
+            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
+            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+            return networkPlayerObject;
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

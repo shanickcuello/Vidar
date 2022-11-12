@@ -7,12 +7,20 @@ namespace Player_
     {
         [SerializeField] private Bullet _prefabBall;
         [SerializeField] private Transform spawnBulletTransform;
-        
+        [SerializeField] private float _playerSpeed;
         [Networked] private TickTimer reloadTime { get; set; }
+
+        public bool Alive
+        {
+            get => alive;
+        }
+
+        private bool alive = true;
         
         private NetworkCharacterControllerPrototype _cc;
         private Vector3 _forward;
         private bool _canMove;
+        
 
         private void Awake()
         {
@@ -25,7 +33,7 @@ namespace Player_
             {
                 if (!_canMove) return;
                 data.direction.Normalize();
-                _cc.Move(5 * data.direction * Runner.DeltaTime);
+                _cc.Move(_playerSpeed * data.direction * Runner.DeltaTime);
 
                 if (data.direction.sqrMagnitude > 0)
                     _forward = data.direction;
