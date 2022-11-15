@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 7434226475378510382}
   - component: {fileID: 7434226475378510380}
   - component: {fileID: 2342674360547571432}
-  m_Layer: 0
+  - component: {fileID: 2651407522232372930}
+  - component: {fileID: 1098823170232910782}
+  m_Layer: 3
   m_Name: ZombiePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,6 +80,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 7434226475378510380}
   - {fileID: 2342674360547571432}
+  - {fileID: 2651407522232372930}
   - {fileID: 797579583987215106}
   SimulationBehaviours: []
 --- !u!114 &7434226475378510380
@@ -130,6 +133,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _speedMovement: 1
+--- !u!114 &2651407522232372930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434226475378510371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1039544458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  Config: 1
+  BroadRadius: 1
+  Offset: {x: 0, y: 0, z: 0}
+  GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  Hitboxes:
+  - {fileID: 1098823170232910782}
+--- !u!114 &1098823170232910782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434226475378510371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 2
+  SphereRadius: 1
+  BoxExtents: {x: 0, y: 0, z: 0}
+  Offset: {x: 0, y: 0, z: 0}
+  Root: {fileID: 2651407522232372930}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1001 &3291526147169954020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,9 +177,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7434226475378510383}
     m_Modifications:
+    - target: {fileID: 100072, guid: be66986effd141b4992d2d78be127139, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 100074, guid: be66986effd141b4992d2d78be127139, type: 3}
       propertyPath: m_Name
       value: Zombunny
+      objectReference: {fileID: 0}
+    - target: {fileID: 100074, guid: be66986effd141b4992d2d78be127139, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400074, guid: be66986effd141b4992d2d78be127139, type: 3}
       propertyPath: m_RootOrder

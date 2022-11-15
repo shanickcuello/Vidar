@@ -62,7 +62,6 @@ namespace Spawner
             {
                 var networkPlayerObject = CreatePlayers(runner, player);
                 IncreasePlayerCounter();
-                Debug.Log("New player online " + _amountOfPlayersOnline + player);
                 _spawnedCharacters.Add(player, networkPlayerObject);
                 
                 UnlockMovementForPlayersWhenNeeded();

@@ -11,7 +11,6 @@ namespace Zombies
     public class Zombie : NetworkBehaviour
     {
         [SerializeField] private float _speedMovement;
-
         private NetworkCharacterControllerPrototype _cc;
         private Player target;
         private Transform _targetTransform;
@@ -46,6 +45,16 @@ namespace Zombies
             Debug.DrawRay(transform.position, directionToMove);
             _cc.Move( directionToMove * _speedMovement * Runner.DeltaTime);
         }
-        
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            Debug.Log("Colisione con algo: " + collision.gameObject.name);
+        }
+
+        public void HitZombie(PlayerRef objectInputAuthority)
+        {
+            Runner.Despawn(Object);
+            Debug.Log("Hit Zombie");
+        }
     }
 }

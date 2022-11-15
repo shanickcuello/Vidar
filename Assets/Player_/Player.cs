@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using Zombies;
 
 namespace Player_
 {
@@ -10,7 +11,8 @@ namespace Player_
         [SerializeField] private float _playerSpeed;
         [SerializeField] private Animator _animator;
         [Networked] private TickTimer reloadTime { get; set; }
-        
+        [SerializeField] LayerMask _zombieLayer;
+
         private PlayerAnimationStates currentPlayerAnimationState;
 
         public bool Alive
@@ -23,7 +25,7 @@ namespace Player_
         private NetworkCharacterControllerPrototype _cc;
         private Vector3 _forward;
         private bool _canMove;
-        
+
 
         private void Awake()
         {
@@ -48,7 +50,41 @@ namespace Player_
                     if ((data.buttons & NetworkInputData.MOUSEBUTTON1) != 0)
                     {
                         reloadTime = TickTimer.CreateFromSeconds(Runner, 0.5f);
-                        Runner.Spawn(_prefabBall,
+
+
+                        Runner.LagCompensation.Raycast(spawnBulletTransform.position, spawnBulletTransform.forward, 500,
+                            Object.InputAuthority, out var hitInfo, _zombieLayer, HitOptions.IncludePhysX);
+
+                        float hitInfoDistance = 100;
+                        var hitZombie = false;
+
+                        if (hitInfo.Distance > 0)
+                        {
+                            hitInfoDistance = hitInfo.Distance;
+                        }
+
+                        if (hitInfo.Hitbox != null)
+                        {
+                            Debug.Log($"{Time.time}, {transform.name}, hit hitbox {hitInfo.Hitbox.transform.root.name}");
+                            hitZombie = true;
+                        }
+                        else if (hitInfo.Collider != null)
+                        {
+                            Debug.Log($"{Time.time}, {transform.name}, hit PhysX {hitInfo.Collider.transform.name}");
+                        }
+
+                        if (hitZombie)
+                        {
+                            Debug.DrawRay(spawnBulletTransform.position, spawnBulletTransform.forward * 500, Color.red, 2);
+                            hitInfo.GameObject.GetComponent<Zombie>().HitZombie(Object.InputAuthority);
+                        }
+                        else
+                        {
+                            Debug.DrawRay(spawnBulletTransform.position, spawnBulletTransform.forward * 500, Color.green, 2);
+                        }
+
+
+                            Runner.Spawn(_prefabBall,
                             spawnBulletTransform.position, spawnBulletTransform.rotation,
                             Object.InputAuthority, (runner, o) =>
                             {
@@ -63,8 +99,6 @@ namespace Player_
         private void UpdateAnim(NetworkInputData networkInputData)
         {
             PlayerAnimationStates newState = PlayerAnimationStates.Idle;
-
-            Debug.Log($"NetworkInputData.Direction: {networkInputData.direction}");
             
             if (networkInputData.direction != Vector3.zero)
             {
@@ -77,7 +111,6 @@ namespace Player_
 
             if (newState != currentPlayerAnimationState)
             {
-                Debug.Log($"CurrentState: {newState}");
                 currentPlayerAnimationState = newState;
                 _animator.SetTrigger(currentPlayerAnimationState.ToString());
             }

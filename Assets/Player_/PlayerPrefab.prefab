@@ -133,6 +133,9 @@ MonoBehaviour:
   spawnBulletTransform: {fileID: 4653878205426081439}
   _playerSpeed: 5
   _animator: {fileID: 9149368368007107695}
+  _zombieLayer:
+    serializedVersion: 2
+    m_Bits: 9
 --- !u!1 &6342885922147903990
 GameObject:
   m_ObjectHideFlags: 0

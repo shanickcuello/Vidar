@@ -115,7 +115,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _bulletSpeed: 20
+  _bulletSpeed: 200
+  _zombieLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1573371824014942414
 GameObject:
   m_ObjectHideFlags: 0
