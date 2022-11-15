@@ -1,4 +1,5 @@
 using Fusion;
+using HP_;
 using UnityEngine;
 using Zombies;
 
@@ -49,7 +50,7 @@ namespace Player_
                 {
                     if ((data.buttons & NetworkInputData.MOUSEBUTTON1) != 0)
                     {
-                        reloadTime = TickTimer.CreateFromSeconds(Runner, 0.5f);
+                        reloadTime = TickTimer.CreateFromSeconds(Runner, 0.1f);
 
 
                         Runner.LagCompensation.Raycast(spawnBulletTransform.position, spawnBulletTransform.forward, 500,
@@ -65,26 +66,25 @@ namespace Player_
 
                         if (hitInfo.Hitbox != null)
                         {
-                            Debug.Log($"{Time.time}, {transform.name}, hit hitbox {hitInfo.Hitbox.transform.root.name}");
                             hitZombie = true;
                         }
                         else if (hitInfo.Collider != null)
                         {
-                            Debug.Log($"{Time.time}, {transform.name}, hit PhysX {hitInfo.Collider.transform.name}");
                         }
 
                         if (hitZombie)
                         {
                             Debug.DrawRay(spawnBulletTransform.position, spawnBulletTransform.forward * 500, Color.red, 2);
-                            hitInfo.GameObject.GetComponent<Zombie>().HitZombie(Object.InputAuthority);
+                            
+                            if(Object.HasStateAuthority)
+                                hitInfo.Hitbox.transform.root.GetComponent<HPHandler>().OnTakeDamage();
                         }
                         else
                         {
                             Debug.DrawRay(spawnBulletTransform.position, spawnBulletTransform.forward * 500, Color.green, 2);
                         }
-
-
-                            Runner.Spawn(_prefabBall,
+                        
+                        Runner.Spawn(_prefabBall,
                             spawnBulletTransform.position, spawnBulletTransform.rotation,
                             Object.InputAuthority, (runner, o) =>
                             {
