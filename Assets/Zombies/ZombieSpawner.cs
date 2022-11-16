@@ -1,12 +1,14 @@
-﻿using Fusion;
+﻿using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Zombies
 {
     public class ZombieSpawner : NetworkBehaviour
     {
         [SerializeField] private Zombie _zombiePrefab;
-        [SerializeField] private Transform zombieSpawnPosition;
+        [SerializeField] private List<Transform> zombieSpawnPosition;
         [SerializeField] private float spawnerSpeed;
         [SerializeField] private int amountOfZombiesToSpawn;
         [Networked] private TickTimer recallTimeToSpawnZombie { get; set; }
@@ -26,10 +28,12 @@ namespace Zombies
             if (!Runner.IsServer) return;
             if(!shouldSpawn) return;
             if (!recallTimeToSpawnZombie.ExpiredOrNotRunning(Runner)) return;
+
+            var randomPositionToSpawn = UnityEngine.Random.Range(0, zombieSpawnPosition.Count);
             
             recallTimeToSpawnZombie = TickTimer.CreateFromSeconds(Runner, spawnerSpeed);
             Runner.Spawn(_zombiePrefab,
-                zombieSpawnPosition.position, zombieSpawnPosition.rotation,
+                zombieSpawnPosition[randomPositionToSpawn].position, zombieSpawnPosition[randomPositionToSpawn].rotation,
                 Object.InputAuthority, (runner, o) =>
                 {
                     o.GetComponent<Zombie>().SetTickTimer();

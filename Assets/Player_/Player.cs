@@ -26,10 +26,11 @@ namespace Player_
         private NetworkCharacterControllerPrototype _cc;
         private Vector3 _forward;
         private bool _canMove;
-
-
+        private bool _dead;
+        
         private void Awake()
         {
+            _dead = false;
             _cc = GetComponent<NetworkCharacterControllerPrototype>();
             currentPlayerAnimationState = PlayerAnimationStates.Idle;
         }
@@ -38,6 +39,7 @@ namespace Player_
         {
             if (GetInput(out NetworkInputData data))
             {
+                if (_dead) return;
                 if (!_canMove) return;
                 UpdateAnim(data);
                 data.direction.Normalize();
@@ -119,7 +121,10 @@ namespace Player_
 
         public void Death()
         {
-            Debug.Log("Me mato un zombie");
+            _dead = true;
+            _animator.SetTrigger(PlayerAnimationStates.Dead.ToString());
+            GetBehaviour<Hitbox>().enabled = false;
+            GetBehaviour<HitboxRoot>().enabled = false;
         }
     }
 

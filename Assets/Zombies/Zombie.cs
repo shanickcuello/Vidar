@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
@@ -90,7 +91,6 @@ namespace Zombies
                     Debug.DrawRay(transform.position, transform.forward * attackRange, Color.red, duration:1);
                     if(Object.HasStateAuthority)
                         hitInfo.Hitbox.transform.root.GetComponent<HPHandler>().OnTakeDamage();
-                    Debug.Log("Le pegue a un player");
                 }
                 else
                 {
@@ -117,6 +117,14 @@ namespace Zombies
         {
             _animator.SetTrigger("Death");
             _death = true;
+            StartCoroutine(Despawn());
+        }
+
+        private IEnumerator Despawn()
+        {
+            yield return new WaitForSeconds(3);
+            Runner.Despawn(Object);
+            Destroy(gameObject);
         }
 
         public void SetTickTimer()

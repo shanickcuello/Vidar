@@ -55,11 +55,9 @@ namespace HP_
         {
             if(isDead) return;
             HP -= 1;
-            Debug.Log($"{Time.time} Took damage {HP} left");
 
             if (HP <= 0)
             {
-                Debug.Log($"{Time.time} {transform.name}, died");
                 isDead = true;
             }
         }
@@ -83,7 +81,6 @@ namespace HP_
         
         static void OnStateChanged(Changed<HPHandler> changed)
         {
-            Debug.Log($"{Time.time} OnStateChange value {changed.Behaviour.isDead}");
             bool isCurrentlyDead = changed.Behaviour.isDead;
             changed.LoadOld();
 
