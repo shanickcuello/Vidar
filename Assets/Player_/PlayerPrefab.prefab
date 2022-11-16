@@ -14,7 +14,9 @@ GameObject:
   - component: {fileID: 3557624804971650912}
   - component: {fileID: -1718165943363308401}
   - component: {fileID: 3807610460547187839}
-  m_Layer: 0
+  - component: {fileID: 8419167196852467330}
+  - component: {fileID: 1385233049344991052}
+  m_Layer: 6
   m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,6 +83,7 @@ MonoBehaviour:
   - {fileID: 3557624804971650912}
   - {fileID: -1718165943363308401}
   - {fileID: 3807610460547187839}
+  - {fileID: 1385233049344991052}
   - {fileID: 5928292996213612914}
   SimulationBehaviours: []
 --- !u!114 &3557624804971650912
@@ -152,12 +155,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  isZombie: 0
+  startHp: 10
   _HP: 0
   _isDead: 0
   uiOnHitColor: {r: 0.8679245, g: 0.20060521, b: 0.20060521, a: 0.8784314}
   uiOnHitImage: {fileID: 8998064196726112261}
   bodyMeshRenderer: {fileID: 9149368368003001007}
   defaultMeshBodyColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &8419167196852467330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3557624804971650927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1014831617, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 2
+  SphereRadius: 1
+  BoxExtents: {x: 0, y: 0, z: 0}
+  Offset: {x: 0, y: 0, z: 0}
+  Root: {fileID: 1385233049344991052}
+  GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &1385233049344991052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3557624804971650927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1039544458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  Config: 1
+  BroadRadius: 1
+  Offset: {x: 0, y: 0, z: 0}
+  GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  Hitboxes:
+  - {fileID: 8419167196852467330}
 --- !u!1 &6342885922147903990
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +209,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4653878205426081439}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpawnBulletPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9149368368016702343}
   - component: {fileID: 9149368368010521229}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FaceLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +338,7 @@ GameObject:
   - component: {fileID: 9149368368011199695}
   - component: {fileID: 9149368368014278221}
   - component: {fileID: 5928292996213612914}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player 1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -311,7 +353,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9149368368016598953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.78, z: 0}
+  m_LocalPosition: {x: -0.481, y: -0.78, z: 0}
   m_LocalScale: {x: 1.9114604, y: 1.9114604, z: 1.9114604}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -467,7 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   Animator: {fileID: 9149368368007107695}
-  TotalWords: 0
+  TotalWords: 1
   SyncSettings: 79
   FloatAccuracy:
     _value: 0
@@ -481,8 +523,8 @@ MonoBehaviour:
     _value: 0
     _inverse: 0
     _hash: -814817977
-  StateHashes: 0000000046980c4f14c27366
-  TriggerHashes: 00000000
+  StateHashes: 0000000046980c4f14c273662b1a167c794069552afa8626a8b5caa3
+  TriggerHashes: 000000002b1a167c8b7cfd671ae6174d
 --- !u!1 &9149368368016598955
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +539,7 @@ GameObject:
   - component: {fileID: 9149368368014278223}
   - component: {fileID: 9149368368009427471}
   - component: {fileID: 9149368368010521231}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GunBarrelEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5654,7 +5696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9149368368016702349}
   - component: {fileID: 9149368368003001005}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5740,7 +5782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9149368368016702351}
   - component: {fileID: 9149368368003001007}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5909,6 +5951,14 @@ PrefabInstance:
     - target: {fileID: 5955170522236144116, guid: 9fdad688c7e954f46bef0c6a894b407c, type: 3}
       propertyPath: m_Name
       value: PlayerCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5955170522236144116, guid: 9fdad688c7e954f46bef0c6a894b407c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5955170522787860979, guid: 9fdad688c7e954f46bef0c6a894b407c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fdad688c7e954f46bef0c6a894b407c, type: 3}

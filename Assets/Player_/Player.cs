@@ -68,9 +68,6 @@ namespace Player_
                         {
                             hitZombie = true;
                         }
-                        else if (hitInfo.Collider != null)
-                        {
-                        }
 
                         if (hitZombie)
                         {
@@ -122,7 +119,7 @@ namespace Player_
 
         public void Death()
         {
-            
+            Debug.Log("Me mato un zombie");
         }
     }
 

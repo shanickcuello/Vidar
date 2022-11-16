@@ -8,22 +8,23 @@ namespace HP_
 {
     public class HPHandler : NetworkBehaviour
     {
+        [SerializeField] private bool isZombie;
+        [SerializeField] private float startHp;
+
         [Networked(OnChanged = nameof(OnHpChanged))] public byte HP { get; set; }
         [Networked(OnChanged = nameof(OnStateChanged))] public bool isDead { get; set; }
         
-        [SerializeField] private bool isZombie;
         
         public Color uiOnHitColor;
         public Image uiOnHitImage;
         public SkinnedMeshRenderer bodyMeshRenderer;
         public Color defaultMeshBodyColor;
         private bool isInitialized = false;
-        private const byte startHp = 3;
         private IHealth iHealth;
 
         private void Start()
         {
-            HP = startHp;
+            HP = (byte) startHp;
             isDead = false;
 
             defaultMeshBodyColor = bodyMeshRenderer.material.color;

@@ -136,6 +136,11 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _speedMovement: 1
   _animator: {fileID: 3291526147160497540}
+  attackRange: 2
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _attackSpeed: 0.5
 --- !u!114 &2651407522232372930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,9 +191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  isZombie: 1
+  startHp: 20
   _HP: 0
   _isDead: 0
-  isZombie: 1
   uiOnHitColor: {r: 0, g: 0, b: 0, a: 0}
   uiOnHitImage: {fileID: 0}
   bodyMeshRenderer: {fileID: 3291526147156255556}

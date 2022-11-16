@@ -363,6 +363,7 @@ MonoBehaviour:
   _zombiePrefab: {fileID: 2342674360547571432, guid: 1264f367ac023b44293364cbcfa24d80, type: 3}
   zombieSpawnPosition: {fileID: 1287422892}
   spawnerSpeed: 3
+  amountOfZombiesToSpawn: 1
 --- !u!4 &583539012
 Transform:
   m_ObjectHideFlags: 0

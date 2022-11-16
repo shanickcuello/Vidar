@@ -8,6 +8,7 @@ namespace Zombies
         [SerializeField] private Zombie _zombiePrefab;
         [SerializeField] private Transform zombieSpawnPosition;
         [SerializeField] private float spawnerSpeed;
+        [SerializeField] private int amountOfZombiesToSpawn;
         [Networked] private TickTimer recallTimeToSpawnZombie { get; set; }
 
         private bool shouldSpawn;
@@ -21,6 +22,7 @@ namespace Zombies
 
         public override void FixedUpdateNetwork()
         {
+            if(amountOfZombiesToSpawn <= 0) return;
             if (!Runner.IsServer) return;
             if(!shouldSpawn) return;
             if (!recallTimeToSpawnZombie.ExpiredOrNotRunning(Runner)) return;
@@ -30,8 +32,9 @@ namespace Zombies
                 zombieSpawnPosition.position, zombieSpawnPosition.rotation,
                 Object.InputAuthority, (runner, o) =>
                 {
-                    // Initialize the Ball before synchronizing it
+                    o.GetComponent<Zombie>().SetTickTimer();
                 });
+            amountOfZombiesToSpawn--;
         }
     }
 }
