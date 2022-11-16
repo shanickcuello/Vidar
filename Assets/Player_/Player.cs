@@ -5,7 +5,7 @@ using Zombies;
 
 namespace Player_
 {
-    public class Player : NetworkBehaviour
+    public class Player : NetworkBehaviour, IHealth
     {
         [SerializeField] private Bullet _prefabBall;
         [SerializeField] private Transform spawnBulletTransform;
@@ -118,6 +118,11 @@ namespace Player_
         public void SetMovement(bool value)
         {
             _canMove = value;
+        }
+
+        public void Death()
+        {
+            
         }
     }
 

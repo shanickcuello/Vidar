@@ -24,7 +24,7 @@ namespace Spawner
         private List<Player> _players;
         private void Update()
         {
-            _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0);
+            _mouseButton0 = _mouseButton0 | Input.GetMouseButtonUp(0);
         }
 
         async void StartGame(GameMode mode)

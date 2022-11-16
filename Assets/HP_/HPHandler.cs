@@ -1,25 +1,52 @@
 using System;
+using System.Collections;
 using Fusion;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HP_
 {
     public class HPHandler : NetworkBehaviour
     {
-        [Networked(OnChanged = nameof(OnHpChanged))]
-        public byte HP { get; set; }
-
-        [Networked(OnChanged = nameof(OnStateChanged))]
-        public bool isDead { get; set; }
-
+        [Networked(OnChanged = nameof(OnHpChanged))] public byte HP { get; set; }
+        [Networked(OnChanged = nameof(OnStateChanged))] public bool isDead { get; set; }
+        
+        [SerializeField] private bool isZombie;
+        
+        public Color uiOnHitColor;
+        public Image uiOnHitImage;
+        public SkinnedMeshRenderer bodyMeshRenderer;
+        public Color defaultMeshBodyColor;
         private bool isInitialized = false;
-
-        private const byte startHp = 10;
+        private const byte startHp = 3;
+        private IHealth iHealth;
 
         private void Start()
         {
             HP = startHp;
             isDead = false;
+
+            defaultMeshBodyColor = bodyMeshRenderer.material.color;
+            iHealth = GetComponent<IHealth>();
+            isInitialized = true;
+        }
+
+        IEnumerator OnHit()
+        {
+            bodyMeshRenderer.material.color = Color.red;
+          
+            if (Object.HasInputAuthority && !isZombie)
+            {
+                uiOnHitImage.color = uiOnHitColor;
+            }
+            
+            yield return new WaitForSeconds(0.2f);
+            
+            bodyMeshRenderer.material.color = defaultMeshBodyColor;
+            if (Object.HasInputAuthority && !isZombie)
+            {
+                uiOnHitImage.color = new Color(0, 0, 0, 0);
+            }
         }
 
         //Called only from server
@@ -38,13 +65,38 @@ namespace HP_
 
         static void OnHpChanged(Changed<HPHandler> changed)
         {
-            Debug.Log($"{Time.time} OnHPChanged value {changed.Behaviour.HP}");
+            byte newHp = changed.Behaviour.HP;
+            changed.LoadOld();
+            byte oldHp = changed.Behaviour.HP;
+
+            if (newHp < oldHp)
+            {
+                changed.Behaviour.OnHpReduce();
+            }
+        }
+        private void OnHpReduce()
+        {
+            if (!isInitialized) return;
+            StartCoroutine(OnHit());
         }
         
         static void OnStateChanged(Changed<HPHandler> changed)
         {
             Debug.Log($"{Time.time} OnStateChange value {changed.Behaviour.isDead}");
+            bool isCurrentlyDead = changed.Behaviour.isDead;
+            changed.LoadOld();
 
+            bool isDeadOld = changed.Behaviour.isDead;
+
+            if (isCurrentlyDead)
+            {
+                changed.Behaviour.OnDeath();
+            }
+        }
+
+        private void OnDeath()
+        {
+            iHealth.Death();
         }
 
     }
