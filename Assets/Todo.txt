@@ -1,6 +1,5 @@
 ﻿- Mostrar quien gano y quien perdio.
 - Cambiar la forma de apuntado.
-- Hacer "Lobby"
 - Que los zombies vayan a otro player cuando mueren
 - Cambiar SpawnPoints de los players.
 - Ponerle un material diferente a cada player
