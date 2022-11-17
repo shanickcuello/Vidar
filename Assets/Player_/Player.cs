@@ -22,6 +22,8 @@ namespace Player_
         [Networked(OnChanged = nameof(OnAudioChange))] public bool audioValue { get; set; }
         
         [Networked(OnChanged = nameof(OnAnimationChange))] public byte animationValue { get; set; }
+        [Networked] private TickTimer reloadTime { get; set; }
+
         
         private NetworkInputData currentData;
         private bool alive = true;
@@ -107,7 +109,6 @@ namespace Player_
             StartCoroutine(UnableGunLight());
         }
 
-        [Networked] private TickTimer reloadTime { get; set; }
 
         
         public bool Alive
