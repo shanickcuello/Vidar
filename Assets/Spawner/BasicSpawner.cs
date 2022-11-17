@@ -20,7 +20,8 @@ namespace Spawner
         
         [SerializeField] private Button startHosting;
         [SerializeField] private Button joinGame;
-       
+        [SerializeField] private List<Transform> playerSpawnPositions;
+
         private NetworkRunner _runner;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
         private bool _mouseButton0;
@@ -84,7 +85,7 @@ namespace Spawner
         private NetworkObject CreatePlayers(NetworkRunner runner, PlayerRef player)
         {
             // Create a unique position for the player
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
+            Vector3 spawnPosition = playerSpawnPositions[UnityEngine.Random.Range(0,playerSpawnPositions.Count)].position;
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             return networkPlayerObject;
         }
