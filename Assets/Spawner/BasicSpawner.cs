@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
 using Player_;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Zombies;
 
 namespace Spawner
@@ -15,6 +17,9 @@ namespace Spawner
 
         [SerializeField] private ZombieSpawner _zombieSpawner;
         [SerializeField] private int amountPlayerToStartGame;
+        
+        [SerializeField] private Button startHosting;
+        [SerializeField] private Button joinGame;
        
         private NetworkRunner _runner;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
@@ -22,12 +27,13 @@ namespace Spawner
         private int _amountOfPlayersOnline;
 
         private List<Player> _players;
+        
         private void Update()
         {
             _mouseButton0 = _mouseButton0 | Input.GetMouseButtonUp(0);
         }
 
-        async void StartGame(GameMode mode)
+        public async void StartGame(GameMode mode, string gameRoom)
         {
             // Create the Fusion runner and let it know that we will be providing user input
             _runner = gameObject.AddComponent<NetworkRunner>();
@@ -37,24 +43,14 @@ namespace Spawner
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = mode,
-                SessionName = "TestRoom",
+                SessionName = gameRoom,
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });}
         
         private void OnGUI()
         {
-            if (_runner == null)
-            {
-                if (GUI.Button(new Rect(0,0,200,40), "Host"))
-                {
-                    StartGame(GameMode.Host);
-                }
-                if (GUI.Button(new Rect(0,40,200,40), "Join"))
-                {
-                    StartGame(GameMode.Client);
-                }
-            }
+            
         }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {

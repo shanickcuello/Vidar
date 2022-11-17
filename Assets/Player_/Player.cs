@@ -1,6 +1,7 @@
 using System.Collections;
 using Fusion;
 using HP_;
+using TMPro;
 using UnityEngine;
 using Zombies;
 
@@ -16,7 +17,10 @@ namespace Player_
         [SerializeField] private Light gunLight;
         [SerializeField] private ParticleSystem gunParticles;
         [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private TextMeshProUGUI nicknameText;
         
+        
+        [Networked(OnChanged = nameof(OnNicknameChanged))] public NetworkString<_16> nickname { get; set; }
         [Networked(OnChanged = nameof(OnLightChange))] public bool light { get; set; }
         [Networked(OnChanged = nameof(OnParticleValueChange))] public bool particleActive { get; set; }
         [Networked(OnChanged = nameof(OnAudioChange))] public bool audioValue { get; set; }
@@ -31,6 +35,30 @@ namespace Player_
         private Vector3 _forward;
         private bool _canMove;
         private bool _dead;
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetNickname(string nickname, RpcInfo info = default)
+        {
+            this.nickname = nickname;
+        }
+
+        public override void Spawned()
+        {
+            if (Object.HasInputAuthority)
+            {
+                RPC_SetNickname(PlayerPrefs.GetString("playerNickname"));
+            }
+        }
+
+        static void OnNicknameChanged(Changed<Player> changed)
+        {
+           changed.Behaviour.OnNicknameChanged();
+        }
+        
+        private void OnNicknameChanged()
+        {
+            nicknameText.text = nickname.ToString();
+        }
         
         static void OnAnimationChange(Changed<Player> changed)
         {
