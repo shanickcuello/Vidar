@@ -1,3 +1,4 @@
+using System.Collections;
 using Fusion;
 using HP_;
 using UnityEngine;
@@ -11,40 +12,139 @@ namespace Player_
         [SerializeField] private Transform spawnBulletTransform;
         [SerializeField] private float _playerSpeed;
         [SerializeField] private Animator _animator;
-        [Networked] private TickTimer reloadTime { get; set; }
         [SerializeField] LayerMask _zombieLayer;
-
-        private PlayerAnimationStates currentPlayerAnimationState;
-
-        public bool Alive
-        {
-            get => alive;
-        }
-
-        private bool alive = true;
+        [SerializeField] private Light gunLight;
+        [SerializeField] private ParticleSystem gunParticles;
+        [SerializeField] private AudioSource _audioSource;
         
+        [Networked(OnChanged = nameof(OnLightChange))] public bool light { get; set; }
+        [Networked(OnChanged = nameof(OnParticleValueChange))] public bool particleActive { get; set; }
+        [Networked(OnChanged = nameof(OnAudioChange))] public bool audioValue { get; set; }
+        
+        [Networked(OnChanged = nameof(OnAnimationChange))] public byte animationValue { get; set; }
+        
+        private NetworkInputData currentData;
+        private bool alive = true;
         private NetworkCharacterControllerPrototype _cc;
         private Vector3 _forward;
         private bool _canMove;
         private bool _dead;
         
+        static void OnAnimationChange(Changed<Player> changed)
+        {
+            byte newAnimationValue = changed.Behaviour.animationValue;
+            changed.LoadOld();
+            byte oldAudioValue = changed.Behaviour.animationValue;
+
+            if (newAnimationValue != oldAudioValue)
+            {
+                changed.Behaviour.OnAnimationValueChange(newAnimationValue);
+            }
+        }
+        
+        private void OnAnimationValueChange(byte newAnimationValue)
+        {
+            if (newAnimationValue == 0)
+            {
+                _animator.SetTrigger(PlayerAnimationStates.Idle.ToString());
+            }
+            else
+            {
+                _animator.SetTrigger(PlayerAnimationStates.Walking.ToString());
+            }
+        }
+        
+        static void OnAudioChange(Changed<Player> changed)
+        {
+            bool newAudioValue = changed.Behaviour.audioValue;
+            changed.LoadOld();
+            bool oldAudioValue = changed.Behaviour.audioValue;
+
+            if (newAudioValue != oldAudioValue)
+            {
+                changed.Behaviour.OnAudioPlay();
+            }
+        }
+        
+        private void OnAudioPlay()
+        {
+            _audioSource.Play();
+        }
+
+        
+        static void OnParticleValueChange(Changed<Player> changed)
+        {
+            bool newParticleValue = changed.Behaviour.particleActive;
+            changed.LoadOld();
+            bool oldParticleValue = changed.Behaviour.particleActive;
+
+            if (newParticleValue != oldParticleValue)
+            {
+                changed.Behaviour.OnParticleValueUpdate();
+            }
+        }
+        
+        private void OnParticleValueUpdate()
+        {
+            gunParticles.Play();
+        }
+        
+        static void OnLightChange(Changed<Player> changed)
+        {
+            bool newLigtValue = changed.Behaviour.light;
+            changed.LoadOld();
+            bool oldLightValue = changed.Behaviour.light;
+
+            if (newLigtValue != oldLightValue)
+            {
+                changed.Behaviour.OnLightEnableChange(newLigtValue);
+            }
+        }
+
+        private void OnLightEnableChange(bool newLigtValue)
+        {
+            gunLight.enabled = newLigtValue;
+            StartCoroutine(UnableGunLight());
+        }
+
+        [Networked] private TickTimer reloadTime { get; set; }
+
+        
+        public bool Alive
+        {
+            get => !_dead;
+        }
+        
         private void Awake()
         {
             _dead = false;
             _cc = GetComponent<NetworkCharacterControllerPrototype>();
-            currentPlayerAnimationState = PlayerAnimationStates.Idle;
+            gunLight.enabled = false;
         }
         
         public override void FixedUpdateNetwork()
         {
+            
             if (GetInput(out NetworkInputData data))
             {
                 if (_dead) return;
                 if (!_canMove) return;
-                UpdateAnim(data);
                 data.direction.Normalize();
+                
+                if (data.direction != currentData.direction)
+                {
+                    currentData = data;
+                    if (data.direction != Vector3.zero)
+                    {
+                        animationValue = 1;
+                    }
+                    else
+                    {
+                        animationValue = 0;
+                    }
+                }
+                
                 _cc.Move(_playerSpeed * data.direction * Runner.DeltaTime);
-
                 if (data.direction.sqrMagnitude > 0)
                     _forward = data.direction;
 
@@ -57,6 +157,10 @@ namespace Player_
 
                         Runner.LagCompensation.Raycast(spawnBulletTransform.position, spawnBulletTransform.forward, 500,
                             Object.InputAuthority, out var hitInfo, _zombieLayer, HitOptions.IncludePhysX);
+
+                        light = true;
+                        particleActive = !particleActive;
+                        audioValue = !audioValue;
 
                         float hitInfoDistance = 100;
                         var hitZombie = false;
@@ -95,25 +199,12 @@ namespace Player_
             }
         }
 
-        private void UpdateAnim(NetworkInputData networkInputData)
+        private IEnumerator UnableGunLight()
         {
-            PlayerAnimationStates newState = PlayerAnimationStates.Idle;
-            
-            if (networkInputData.direction != Vector3.zero)
-            {
-                newState = PlayerAnimationStates.Walking;
-            }
-            else
-            {
-                newState = PlayerAnimationStates.Idle;
-            }
-
-            if (newState != currentPlayerAnimationState)
-            {
-                currentPlayerAnimationState = newState;
-                _animator.SetTrigger(currentPlayerAnimationState.ToString());
-            }
+            yield return new WaitForSeconds(0.2f);
+            light = false;
         }
+        
         public void SetMovement(bool value)
         {
             _canMove = value;

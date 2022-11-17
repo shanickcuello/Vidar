@@ -192,7 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   isZombie: 1
-  startHp: 20
+  startHp: 10
   _HP: 0
   _isDead: 0
   uiOnHitColor: {r: 0, g: 0, b: 0, a: 0}

@@ -101,18 +101,6 @@ namespace Zombies
            
         }
         
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            Debug.Log("Colisione con algo: " + collision.gameObject.name);
-        }
-
-        public void HitZombie(PlayerRef objectInputAuthority)
-        {
-            Runner.Despawn(Object);
-            Debug.Log("Hit Zombie");
-        }
-
         public void Death()
         {
             _animator.SetTrigger("Death");
