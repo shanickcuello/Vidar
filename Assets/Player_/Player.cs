@@ -46,7 +46,8 @@ namespace Player_
         {
             if (Object.HasInputAuthority)
             {
-                RPC_SetNickname(PlayerPrefs.GetString("playerNickname"));
+                if (PlayerPrefs.HasKey("playerNickname"))
+                    RPC_SetNickname(PlayerPrefs.GetString("playerNickname"));
             }
         }
 

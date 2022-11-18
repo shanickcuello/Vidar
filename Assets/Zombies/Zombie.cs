@@ -20,10 +20,10 @@ namespace Zombies
 
         [Networked] private TickTimer reloadTime { get; set; }
 
+        public bool death;
         private NetworkCharacterControllerPrototype _cc;
         private Player target;
         private Transform _targetTransform;
-        private bool _death;
         private bool _initialized;
 
         private void Awake()
@@ -50,7 +50,7 @@ namespace Zombies
 
         public override void FixedUpdateNetwork()
         {
-            if(_death) return;
+            if(death) return;
             if(target == null || _targetTransform == null) return;
             var directionToMove = _targetTransform.position - transform.position;
             directionToMove.Normalize();
@@ -82,9 +82,6 @@ namespace Zombies
                 {
                     hitPlayer = true;
                 }
-                else if (hitInfo.Collider != null)
-                {
-                }
 
                 if (hitPlayer)
                 {
@@ -104,7 +101,7 @@ namespace Zombies
         public void Death()
         {
             _animator.SetTrigger("Death");
-            _death = true;
+            death = true;
             StartCoroutine(Despawn());
         }
 

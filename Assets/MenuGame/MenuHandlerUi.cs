@@ -45,6 +45,7 @@ namespace MenuGame
     private void OnPlayerNicknameChange(string nickname)
     {
       PlayerPrefs.SetString("playerNickname", nickname);
+      PlayerPrefs.Save();
     }
   }
 }

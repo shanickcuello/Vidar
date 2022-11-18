@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
 using Player_;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Zombies;
 
 namespace Spawner
@@ -18,8 +16,6 @@ namespace Spawner
         [SerializeField] private ZombieSpawner _zombieSpawner;
         [SerializeField] private int amountPlayerToStartGame;
         
-        [SerializeField] private Button startHosting;
-        [SerializeField] private Button joinGame;
         [SerializeField] private List<Transform> playerSpawnPositions;
 
         private NetworkRunner _runner;
@@ -48,11 +44,8 @@ namespace Spawner
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });}
+
         
-        private void OnGUI()
-        {
-            
-        }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             if (runner.IsServer)
