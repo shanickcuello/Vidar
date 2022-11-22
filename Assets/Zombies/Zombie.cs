@@ -25,6 +25,7 @@ namespace Zombies
         private Player target;
         private Transform _targetTransform;
         private bool _initialized;
+        private ZombieSpawner _zombieSpawner;
 
         private void Awake()
         {
@@ -102,6 +103,7 @@ namespace Zombies
         {
             _animator.SetTrigger("Death");
             death = true;
+            _zombieSpawner.AddZombieDead();
             StartCoroutine(Despawn());
         }
 
@@ -117,5 +119,7 @@ namespace Zombies
             if (!_initialized) return;
             reloadTime = TickTimer.CreateFromSeconds(Runner, _attackSpeed);
         }
+
+        public void SetSpawner(ZombieSpawner zombieSpawner) => _zombieSpawner = zombieSpawner;
     }
 }

@@ -1400,7 +1400,7 @@ MonoBehaviour:
   - {fileID: 316361327}
   - {fileID: 1988597229}
   spawnerSpeed: 3
-  amountOfZombiesToSpawn: 5
+  amountOfZombiesToSpawn: 2
 --- !u!4 &583539012
 Transform:
   m_ObjectHideFlags: 0
@@ -2376,6 +2376,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1052319244992663865, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_Intensity
+      value: 5.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052319244992663865, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052319244992663865, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073216711587722835, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_Intensity
+      value: 5.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073216711587722835, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073216711587722835, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6897982751294344846, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_Intensity
+      value: 5.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6897982751294344846, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6897982751294344846, guid: daf428365fdecce4385fab8111c174b0, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7489739596289441849, guid: daf428365fdecce4385fab8111c174b0, type: 3}
       propertyPath: m_Name
       value: Environment
@@ -2430,11 +2466,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7489739596289710799, guid: daf428365fdecce4385fab8111c174b0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.96
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 7489739596289710799, guid: daf428365fdecce4385fab8111c174b0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.23
+      value: 12.15
       objectReference: {fileID: 0}
     - target: {fileID: 7489739596289741571, guid: daf428365fdecce4385fab8111c174b0, type: 3}
       propertyPath: m_LocalPosition.x

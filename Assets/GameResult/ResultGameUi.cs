@@ -1,6 +1,9 @@
-﻿using Fusion;
+﻿using System.Collections;
+using Fusion;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameResult
 {
@@ -12,8 +15,16 @@ namespace GameResult
         
         public void GameOver(bool win)
         {
+            if(resultCanvas.activeSelf) return;
             resultCanvas.SetActive(true);
-            ResultText.text = win ? "You beat them all" : "You lose, next dreem";
+            ResultText.text = win ? "You beat them all" : "You lose, next dream";
+            StartCoroutine(TransitionToMenu());
+        }
+
+        private IEnumerator TransitionToMenu()
+        {
+            yield return new WaitForSeconds(5);
+            SceneManager.LoadScene(0);
         }
     }
 }
