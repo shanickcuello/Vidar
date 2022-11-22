@@ -1,5 +1,6 @@
 using System.Collections;
 using Fusion;
+using GameResult;
 using HP_;
 using TMPro;
 using UnityEngine;
@@ -246,6 +247,9 @@ namespace Player_
             _animator.SetTrigger(PlayerAnimationStates.Dead.ToString());
             GetBehaviour<Hitbox>().enabled = false;
             GetBehaviour<HitboxRoot>().enabled = false;
+            if(!Object.HasInputAuthority) return;
+            if(!Object.InputAuthority) return;
+            FindObjectOfType<ResultGameUi>().GameOver(false);
         }
     }
 
