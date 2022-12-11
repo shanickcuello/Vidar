@@ -103,6 +103,7 @@ namespace Zombies
         {
             _animator.SetTrigger("Death");
             death = true;
+            if(_zombieSpawner != null)
             _zombieSpawner.AddZombieDead();
             StartCoroutine(Despawn());
         }

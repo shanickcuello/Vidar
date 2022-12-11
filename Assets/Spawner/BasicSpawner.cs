@@ -6,6 +6,7 @@ using Player_;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zombies;
+using Object = System.Object;
 
 namespace Spawner
 {
@@ -24,6 +25,7 @@ namespace Spawner
         private int _amountOfPlayersOnline;
 
         private List<Player> _players;
+        private PlayerRef _me;
         
         private void Update()
         {

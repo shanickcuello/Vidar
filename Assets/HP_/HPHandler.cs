@@ -94,6 +94,7 @@ namespace HP_
 
         private void OnDeath()
         {
+            if (iHealth == null) return;
             iHealth.Death();
         }
 

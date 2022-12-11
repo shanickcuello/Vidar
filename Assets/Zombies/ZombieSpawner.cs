@@ -37,10 +37,12 @@ namespace Zombies
         public override void FixedUpdateNetwork()
         {
             if (!Runner.IsServer) return;
-            if (amountOfZombiesToSpawn <= 0 && !_win)
+            if(_win) return;
+            if (amountOfZombiesToSpawn <= 0)
             {
                 if (_zombiesDeads < _maxZombiesToSpawn) return;
                 _win = true;
+                SetSpawning(false);
                 RPC_WinGame(true);
             }
 

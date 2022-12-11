@@ -18,7 +18,6 @@ namespace GameResult
             if(resultCanvas.activeSelf) return;
             resultCanvas.SetActive(true);
             ResultText.text = win ? "You beat them all" : "You lose, next dream";
-            StartCoroutine(TransitionToMenu());
         }
 
         private IEnumerator TransitionToMenu()
