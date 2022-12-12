@@ -6,7 +6,6 @@ using Player_;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zombies;
-using Object = System.Object;
 
 namespace Spawner
 {
